@@ -22,3 +22,15 @@ pub struct Face {
 	pub uvid: [usize; 3],
 	pub layer: i32,
 }
+
+impl Face {
+	pub fn solid(vid: [usize; 3], color: [f32; 4]) -> Face {
+		Self {
+			// -1 is for placeholder in bindless texture (though no real difference)
+			layer: -2,
+			uvid: [0; 3],
+			vid,
+			color,
+		}
+	}
+}
