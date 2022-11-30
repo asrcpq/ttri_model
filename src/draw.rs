@@ -25,17 +25,37 @@ impl Pen {
 			[pos[0] + width, pos[1] - width, z, 1.0],
 			[pos[0] + width, pos[1] + width, z, 1.0],
 		]);
-		m.faces.push(Face {
-			layer: -2,
-			uvid: [0; 3],
+		m.faces.push(Face::solid(
+			[len + 1, len + 2, len],
 			color,
-			vid: [len, len + 1, len + 2],
-		});
-		m.faces.push(Face {
-			layer: -2,
-			uvid: [0; 3],
+		));
+		m.faces.push(Face::solid(
+			[len + 1, len + 2, len + 3],
 			color,
-			vid: [len + 1, len + 2, len + 3],
-		});
+		));
+	}
+
+	pub fn draw_line(&self, m: &mut Model, vs: [V2; 2]) {
+		let width = self.width;
+		let z = self.z;
+		let color = self.color;
+
+		let vnorm = (vs[0] - vs[1]).normalize();
+		let dp = V2::new(-vnorm[1], vnorm[0]) * width;
+		let vlen = vs.len();
+		m.vs.extend(vec![
+			v2p4(vs[0] - dp, z),
+			v2p4(vs[0] + dp, z),
+			v2p4(vs[1] - dp, z),
+			v2p4(vs[1] + dp, z),
+		]);
+		m.faces.push(Face::solid(
+			[vlen, vlen + 1, vlen + 2],
+			color,
+		));
+		m.faces.push(Face::solid(
+			[vlen + 3, vlen + 1, vlen + 2],
+			color,
+		));
 	}
 }
