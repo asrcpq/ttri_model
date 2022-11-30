@@ -6,6 +6,16 @@ pub fn v2p4(v2: V2, z: f32) -> [f32; 4] {
 	[v2[0], v2[1], z, 1.0]
 }
 
+impl Default for Pen {
+	fn default() -> Self {
+		Self {
+			width: 0f32,
+			z: 0f32,
+			color: [1f32; 4],
+		}
+	}
+}
+
 pub struct Pen {
 	pub width: f32,
 	pub z: f32,
@@ -24,6 +34,29 @@ impl Pen {
 			[pos[0] - width, pos[1] + width, z, 1.0],
 			[pos[0] + width, pos[1] - width, z, 1.0],
 			[pos[0] + width, pos[1] + width, z, 1.0],
+		]);
+		m.faces.push(Face::solid(
+			[len + 1, len + 2, len],
+			color,
+		));
+		m.faces.push(Face::solid(
+			[len + 1, len + 2, len + 3],
+			color,
+		));
+	}
+
+	pub fn draw_rect(&self, m: &mut Model, lu: V2, rd: V2) {
+		let z = self.z;
+		let color = self.color;
+		let ru = V2::new(rd[0], lu[1]);
+		let ld = V2::new(lu[0], rd[1]);
+
+		let len = m.vs.len();
+		m.vs.extend(vec![
+			v2p4(lu, z),
+			v2p4(ru, z),
+			v2p4(ld, z),
+			v2p4(rd, z),
 		]);
 		m.faces.push(Face::solid(
 			[len + 1, len + 2, len],
