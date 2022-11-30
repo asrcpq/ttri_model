@@ -42,7 +42,7 @@ impl Pen {
 
 		let vnorm = (vs[0] - vs[1]).normalize();
 		let dp = V2::new(-vnorm[1], vnorm[0]) * width;
-		let vlen = vs.len();
+		let vlen = m.vs.len();
 		m.vs.extend(vec![
 			v2p4(vs[0] - dp, z),
 			v2p4(vs[0] + dp, z),
