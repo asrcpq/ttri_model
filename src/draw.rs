@@ -2,6 +2,10 @@ use crate::cmodel::{Model, Face};
 
 type V2 = rust_stddep::nalgebra::Vector2<f32>;
 
+pub fn v2p4(v2: V2, z: f32) -> [f32; 4] {
+	[v2[0], v2[1], z, 1.0]
+}
+
 pub struct Pen {
 	pub width: f32,
 	pub z: f32,
